@@ -1,0 +1,76 @@
+<div class='form-center'>
+    <form class="form" [formGroup]="registrationForm" (ngSubmit)="signUp()">
+      <div form-control-row form-center class="border">
+        <br>
+        <div class="form-control-col form-center title">Sign Up</div>
+        <br>
+        <div class="form-control-col form-center">
+          <span *ngIf="registrationForm.invalid&&errorToggle" class="field"
+            style="color: red;">Fields Are Invalid</span>
+        </div>
+        <div class="form-control-col form-center" formGroupName="registrationData">
+          <input type="text" disabled placeholder="First Name" style="width:100px; text-align: center;">
+          <input type="text" placeholder="Tarun" class="field" formControlName="firstname">
+        </div>
+        <div class="form-control-col form-center">
+          <span *ngIf="registrationFormControls.firstname.invalid&&registrationFormControls.firstname.touched" class="field"
+            style="color: red;">Enter Valid Username</span>
+        </div>
+        <br>
+        <div class="form-control-col form-center" formGroupName="registrationData">
+          <input type="text" disabled placeholder="Last Name" style="width:100px; text-align: center;">
+          <input type="text" placeholder="Sharma" class="field" formControlName="lastname">
+        </div>
+        <div class="form-control-col form-center">
+          <span *ngIf="registrationFormControls.lastname.invalid&&registrationFormControls.lastname.touched" class="field"
+            style="color: red;">Enter Valid Username</span>
+        </div>
+        <br>
+        <div class="form-control-col form-center" formGroupName="registrationData">
+          <input type="text" disabled placeholder="Email" style="width:100px; text-align: center;">
+          <input type="email"  placeholder="test@chicmic.in" class="field" formControlName="email">
+        </div>
+        <div class="form-control-col form-center">
+          <span *ngIf="registrationFormControls.email.invalid&&registrationFormControls.email.touched" class="field"
+            style="color: red;">Enter Valid Email</span>
+        </div>
+        <br>
+        <div class="form-control-col form-center" formGroupName="registrationData">
+          <input type="text" disabled placeholder="Mobile No." style="width:100px; text-align: center;">
+          <input type="text" placeholder="98xxxxxxxx" class="field" formControlName="mobile" (input)="numberCheck($event.target)">
+        </div>
+        <div class="form-control-col form-center">
+          <span *ngIf="registrationFormControls.mobile.invalid&&registrationFormControls.mobile.touched" class="field"
+            style="color: red;">Enter Valid Mobile Number</span>
+        </div>
+        <br>
+        <div class="form-control-col form-center" formGroupName="registrationData">
+          <input type="text" disabled placeholder="D.O.B." style="width:100px; text-align: center;">
+          <input type="Date" placeholder="2023-03-28" class="field" formControlName="dateOfBirth" style="width:260px">
+        </div>
+        <div class="form-control-col form-center">
+          <span *ngIf="registrationFormControls.dateOfBirth.invalid&&registrationFormControls.dateOfBirth.touched" class="field"
+            style="color: red;">Field Can't Be Empty !</span>
+        </div>
+        <br>
+        <div class="form-control-col form-center" formGroupName="registrationData">
+          <input type="text" disabled placeholder="Password" style="width:100px; text-align: center;">
+          <input type="password" placeholder="Password" class="field" formControlName="password">
+        </div>
+        <div class="form-control-col form-center">
+          <span *ngIf="registrationFormControls.password.invalid&&registrationFormControls.password.touched" class="field"
+            style="color: red;">Enter Password containing (A-Z a-z 0-9 symbols?)</span>
+        </div>
+        <br>
+        <div class="form-control-col form-center" formGroupName="confirmations">
+          <input type="text" disabled placeholder="Password" style="width:100px; text-align: center;">
+          <input type="password" class="field" placeholder=" Confirm Password" formControlName="confirmPassword" [style.border-color]="(confirmationControls.confirmPassword.touched)&&(confirmationControls.confirmPassword.value===registrationFormControls.password.value)?'green':''">
+        </div>
+        <br>
+        <div class="form-control-col form-center">
+          <button *ngIf="!registrationForm.invalid" class='btn btn-success signUp' type='submit'>Sign Up</button>
+          <button *ngIf="registrationForm.invalid" class='btn btn-success  signUp' type='button' (click)="errorToggler()">Sign Up</button>
+        </div>
+        </div>
+    </form>
+</div>
