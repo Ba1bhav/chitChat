@@ -16,7 +16,9 @@ constructor(private formBuilder:FormBuilder,private signalSocket:SoketService){
       message:['',Validators.required],
     }
   )
-  this.signalSocket.connection.on('RecieveMessage',(response:any)=>{console.log(response)})
+  this.signalSocket.connection.on('ReceiveMessage',(response:any)=>{
+    this.messages.push(response?.data)
+  })
 
 }
 
@@ -40,9 +42,11 @@ ngOnChanges(){
 
 sendMessage(recieverEmail:string){
   this.signalSocket.sendMessage(recieverEmail,this.chatForm?.value?.message).then((response:any)=>{
-    this.messages.push(response?.data)
   })
   this.chatForm.reset()
 }
+messageFileUpload(event:any){
+console.log(event.srcElement.files[0]);
 
+}
 }

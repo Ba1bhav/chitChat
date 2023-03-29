@@ -17,8 +17,13 @@ logIn() {
   this.httpHandler.logIn(this.loginForm.value)
   .subscribe((response:any)=>
   { console.log('response',response)
+    if(response?.data?.token){
     localStorage.setItem('token',response?.data?.token)
     this._router.navigate(['/chats'])
+    }
+    else{
+      console.log('Invalid Credentials')
+    }
   },
   )
 }

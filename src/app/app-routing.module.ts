@@ -10,7 +10,7 @@ import { ViewGuard } from 'src/services/shared/view.guard';
 const routes: Routes = [
 {path:'login',canActivate:[AuthGuard],component:LoginUserComponent},
 {path:'register',canActivate:[AuthGuard],component:RegisterUserComponent},
-{path:'chats',canActivate:[ViewGuard],component:SearchUserComponent},
+{path:'chats',canActivate:[ViewGuard],canDeactivate:[ViewGuard],component:SearchUserComponent},
 {path:'',redirectTo:'chats',pathMatch:'full'},
 {path:'**',redirectTo:'chats'}
 ];

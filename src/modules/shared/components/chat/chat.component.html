@@ -17,14 +17,17 @@
 
   <main class="msger-chat">
 <ng-container *ngFor="let message of messages">
-    <div  [ngClass]="message.reciever===chatRoom?.email?'msg left-msg':'msg right-msg'">
+    <div  [ngClass]="message.receiverEmail===chatRoom.email?'msg right-msg':'msg left-msg'">
       <div class="msg-bubble">
         <div class="msg-info">
           <div class="msg-info-time">{{message.timeStamp|date:'shortTime'}}</div>
         </div>
 
-        <div class="msg-text">
+        <div *ngIf="message.messageType===1" class="msg-text">
           {{message.messages}}
+        </div>
+        <div *ngIf="message.messageType===2" class="msg-text">
+          <img style="width: 200px;height: 200px;" src='{{message.messages}}'>
         </div>
       </div>
     </div>
@@ -32,6 +35,8 @@
   </main>
 
   <form class="msger-inputarea"  [formGroup]="chatForm" (ngSubmit)="sendMessage(chatRoom?.email)" >
+    <input type="file" style="display: none; color: transparent;" #fileUpload (change)="messageFileUpload($event)">
+    <button type="button" class="msger-send-btn" (click)="fileUpload.click()">Attach</button>
     <input type="text" class="msger-input" placeholder="Enter your message..." formControlName="message">
     <button type="submit" class="msger-send-btn">Send</button>
   </form>
