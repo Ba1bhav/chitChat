@@ -1,31 +1,49 @@
-<table style="width:100%;height:700px;background-color: aliceblue;">
-<thead style="height: 45px;">
-  <tr style="height: 20px;background-color:#eee;">
-    <td>
-      <button style="width:100%;text-align: center;background-color: transparent;border-width: thin; border-color: grey;">
-        search user
-      </button>
+<table style="width:100% ;background-image: linear-gradient(white,orange,white,green,white);">
+  <tr>
+   <td style="width:40%">
+    <table style="width:100%;height:700px;background-color: aliceblue;">
+      <thead style="height: 45px;">
+        <tr style="height: 20px;background-color:#eee;">
+          <td>
+            <button style="width:100%;text-align: center;background-color: transparent;border-width: thin; border-color: grey;">
+              search user
+            </button>
+          </td>
+          <td style="max-width: 192;" >
+              <input type="text" placeholder="Tarun..." style="width:100%" (input)="search($event.target)">
+          </td>
+        </tr>
+      </thead>
+      <tbody style="height: 600px;">
+        <tr><td></td><td>
+      <ng-container  *ngIf="searchResults">
+        <ng-container *ngFor="let user of searchResults">
+      <br>
+      <tr type="button" style="border:solid;height: 50px; background-color:#eee;width: 100%;text-align: -webkit-center;" (click)="createChat(user)" >
+        <td style="text-align: center;">{{user.firstName}} {{user.lastName}}</td>
+        <!-- <td>{{user.email}}</td> -->
+      </tr>
+      <br>
+      </ng-container>
+      </ng-container>
+      <ng-container  *ngIf="!searchResults||searchResults.length<1">
+        <tr >
+        <td></td>
+        <td style="text-align: left;">No results to show !</td>
+        </tr>
+        </ng-container>
     </td>
-    <td >
-        <input type="text" placeholder="Tarun..." style="width:100%" (input)="search($event.target)">
-    </td>
-  </tr>
-</thead>
-<tbody style="height: 600px;">
-<ng-container  *ngIf="searchResults">
-<tr *ngFor="let user of searchResults" style="border:solid;height: 50px;">
-  <td>{{user.firstName}} {{user.lastName}}</td>
-  <td>{{user.email}}</td>
+
+      </tr></tbody>
+      </table>
+  </td>
+  <td style="width: 50%;">
+    <app-chat [chatRoom]="chatRoom"></app-chat>
+  </td>
 </tr>
-</ng-container>
-<ng-container  *ngIf="!searchResults||searchResults.length<1">
-  <tr >
-  <td></td>
-  <td style="text-align: left;">No results to show !</td>
-  </tr>
-  </ng-container>
-</tbody>
 </table>
+
+
 <!-- userId": "2c2ffb82-2bec-4409-8f16-5ee1daa3d82d",
   "firstName": "Tarun",
    "lastName": "Sharma",

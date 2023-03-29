@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpServiceService } from 'src/services/auth/http-service.service';
 import { Validators,FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login-user',
   templateUrl: './login-user.component.html',
@@ -8,7 +9,7 @@ import { Validators,FormBuilder } from '@angular/forms';
 })
 export class LoginUserComponent {
   errorToggle: boolean=false;
-  constructor(private httpHandler:HttpServiceService ,private logInForm:FormBuilder){
+  constructor(private httpHandler:HttpServiceService ,private logInForm:FormBuilder,private _router:Router){
   }
 
 
@@ -17,6 +18,7 @@ logIn() {
   .subscribe((response:any)=>
   { console.log('response',response)
     localStorage.setItem('token',response?.data?.token)
+    this._router.navigate(['/chats'])
   },
   )
 }
@@ -30,5 +32,8 @@ errorToggler(){
 })
 get __loginControls(){
   return this.loginForm?.controls
+}
+registerUser(){
+  this._router.navigate(['/register'])
 }
 }

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder,Validators } from '@angular/forms';
 import { HttpServiceService } from 'src/services/auth/http-service.service';
 import { regData } from 'src/utils/interfaces';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-register-user',
   templateUrl: './register-user.component.html',
@@ -11,7 +11,7 @@ import { regData } from 'src/utils/interfaces';
 export class RegisterUserComponent {
   errorToggle:boolean=false;
 
-  constructor(private httpClient:HttpServiceService,private formsBuilder:FormBuilder){}
+  constructor(private _router:Router,private httpClient:HttpServiceService,private formsBuilder:FormBuilder){}
 
   registrationForm=this.formsBuilder.group({
   registrationData:this.formsBuilder.group({
@@ -60,5 +60,8 @@ export class RegisterUserComponent {
   }
   numberCheck(value:any){
     value.value=value.value.match('[0-9]+')
+  }
+  loginUser(){
+    this._router.navigate(['/login'])
   }
 }

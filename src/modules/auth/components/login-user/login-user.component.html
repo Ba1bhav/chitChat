@@ -34,6 +34,12 @@
         <button *ngIf="!loginForm.invalid" class='btn btn-success logIn' type='submit'>Log In</button>
         <button *ngIf="loginForm.invalid" class='btn btn-success logIn' type='button' (click)="errorToggler()">Log In</button>
       </div>
+      <br>
+      <br>
+      <div class="form-control-col form-center">
+        <button  class='btn btn-success logIn' (click)="registerUser()">Register User</button>
+
+      </div>
       </div>
   </form>
 </div>
