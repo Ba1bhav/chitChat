@@ -33,10 +33,28 @@
     </div>
   </ng-container>
   </main>
-
+  <ng-container *ngIf="fileHandler"><div style="background-color: white;">
+<table class="table table-stripped">
+  <thead>
+    <th>File Name</th>
+    <th>File</th>
+    <th>Action</th>
+  </thead>
+  <tr>
+    <td>{{fileHandler?.name}}</td>
+    <td *ngIf="fileHandler?.isImage"><img style="max-width: 200px;max-height: 200px;" [src]="imageUrl"></td>
+    <td *ngIf="!fileHandler?.isImage">{{fileHandler?.type?.split('/')[1]}}</td>
+    <td type="button" (click)="removeFile()" style="color: red;">X</td>
+  </tr>
+</table>
+  </div></ng-container>
   <form class="msger-inputarea"  [formGroup]="chatForm" (ngSubmit)="sendMessage(chatRoom?.email)" >
-    <input type="file" style="display: none; color: transparent;" #fileUpload (change)="messageFileUpload($event)">
-    <button type="button" class="msger-send-btn" (click)="fileUpload.click()">Attach</button>
+
+    <input type="file" style="display: none; color: transparent;" #fileUpload (change)="messageFileUpload($event)" matTooltip="Info about the action"
+    matTooltipPosition="top">
+    <button type="button" (click)="fileUpload.click()" style="background-color: rgb(0, 196, 65);" >
+      <mat-icon style="padding: 0px;height: 100%;font-weight: bold;color: white;">attach_file</mat-icon>
+    </button>
     <input type="text" class="msger-input" placeholder="Enter your message..." formControlName="message">
     <button type="submit" class="msger-send-btn">Send</button>
   </form>

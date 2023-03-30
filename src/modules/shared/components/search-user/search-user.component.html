@@ -4,7 +4,7 @@
     <table style="width:100%;height:700px;background-color: aliceblue;">
       <thead style="height: 45px;">
         <tr style="height: 20px;background-color:#eee;">
-          <td></td>
+          <td [style.color]="statusOnline?'green':'red'">●</td>
           <td>
             <tr>
             <td >
@@ -14,6 +14,26 @@
             </td>
             <td style="max-width: 192;" >
               <input type="text" placeholder="Tarun..." style="width:100%" (input)="search($event.target)">
+            </td>
+            <td style="width:360px;text-align: right;">
+              <div type="button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" style="vertical-align: middle;border: none;padding: 0px;height:20px">
+                <mat-icon>more_vert</mat-icon>
+              </div>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="logout()">
+                  <mat-icon>power_settings_new</mat-icon>
+                  <span>logout</span>
+                </button>
+                <button mat-menu-item disabled>
+                  <mat-icon>voicemail</mat-icon>
+                  <span>Check voice mail</span>
+                </button>
+                <button mat-menu-item>
+                  <mat-icon>notifications_off</mat-icon>
+                  <span>Disable alerts</span>
+                </button>
+              </mat-menu>
+
             </td>
           </tr>
           </td>
