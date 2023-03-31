@@ -1,8 +1,8 @@
-<section class="msger" style="height:700px">
+<section class="msger" style="height:700px" >
   <header class="msger-header">
     <div class="msger-header-title">
        <div class="chat-nav">
-        <div class="msg-img"  style="background-image: url(https://image.flaticon.com/icons/svg/327/327779.svg)"> </div>
+        <img class="msg-img" [src]="url+'/'+chatRoom?.profilePic">
       </div>
     </div>
     <!-- { "userId": "110969ab-3e43-4f40-9c9f-6244afca6985", "firstName": "Rakesh", "lastName": "Kumar", "email": "gpaswan1976@gmail.com" } -->
@@ -14,10 +14,9 @@
       </span>
     </div>
   </header>
-
-  <main class="msger-chat">
-<ng-container *ngFor="let message of messages">
-    <div  [ngClass]="message.receiverEmail===chatRoom.email?'msg right-msg':'msg left-msg'">
+  <main class="msger-chat"  id='chats' #test [scrollTop]="test.scrollHeight" >
+ <ng-container *ngFor="let message of messages">
+     <div  [ngClass]="message.receiverEmail===chatRoom.email?'msg right-msg':'msg left-msg'">
       <div class="msg-bubble">
         <div class="msg-info">
           <div class="msg-info-time">{{message.timeStamp|date:'shortTime'}}</div>
@@ -32,9 +31,10 @@
       </div>
     </div>
   </ng-container>
+  <div id="view"></div>
   </main>
   <ng-container *ngIf="fileHandler"><div style="background-color: white;">
-<table class="table table-stripped">
+ <table class="table table-stripped">
   <thead>
     <th>File Name</th>
     <th>File</th>
@@ -46,9 +46,11 @@
     <td *ngIf="!fileHandler?.isImage">{{fileHandler?.type?.split('/')[1]}}</td>
     <td type="button" (click)="removeFile()" style="color: red;">X</td>
   </tr>
-</table>
-  </div></ng-container>
-  <form class="msger-inputarea"  [formGroup]="chatForm" (ngSubmit)="sendMessage(chatRoom?.email)" >
+ </table>
+  </div >
+  </ng-container>
+  <ng-container  *ngIf="chatRoom">
+  <form class="msger-inputarea"  [formGroup]="chatForm" (ngSubmit)="sendMessage(chatRoom?.email)"  >
 
     <input type="file" style="display: none; color: transparent;" #fileUpload (change)="messageFileUpload($event)" matTooltip="Info about the action"
     matTooltipPosition="top">
@@ -59,6 +61,7 @@
     <button type="submit" class="msger-send-btn">Send</button>
   </form>
   <!-- <button class="btn" (click)="emitTesting()"> Click Me</button> -->
+  </ng-container>
 </section>
 
 

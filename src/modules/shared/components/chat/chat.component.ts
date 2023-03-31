@@ -1,17 +1,19 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges,ElementRef, ViewChild} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SoketService } from 'src/services/shared/soket.service';
 import { SharedHttpServiceService } from 'src/services/shared/shared-http-service.service';
 import { url } from 'src/environments/constants';
 import { ConnectionStatusService } from 'src/services/shared/connection-status.service';
+import { Router } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent implements OnChanges {
-  state=this.signalSocket.connection.state
+export class ChatComponent implements OnChanges ,OnDestroy{
   urlHandler=URL;
+  url=url;
   @Input() chatRoom:any;
   messages:any;
   chatForm:FormGroup;
@@ -19,7 +21,13 @@ export class ChatComponent implements OnChanges {
   fileHandler:any;
   imageExtensions=['jpg','jpeg','gif','png',]
   imageUrl:any=''
-constructor(private httpService:SharedHttpServiceService,private formBuilder:FormBuilder,private signalSocket:SoketService, private connectionStatusService:ConnectionStatusService){
+constructor(private scroller: ViewportScroller,private elementRef:ElementRef,private signalStatus:ConnectionStatusService,private httpService:SharedHttpServiceService,private formBuilder:FormBuilder,private signalSocket:SoketService, private connectionStatusService:ConnectionStatusService){
+  console.log('chat')
+  this.signalSocket.startConnection().then((response:any)=>{
+    console.log('Connected');
+    this.signalStatus.emitConnected()
+    this.signalSocket.getChatlist()
+    }).catch(()=>{this.signalStatus.emitDisconnected()})
   this.chatForm=formBuilder.group(
     {
       message:['',],
@@ -27,10 +35,12 @@ constructor(private httpService:SharedHttpServiceService,private formBuilder:For
   )
   this.signalSocket.connection.on('ReceiveMessage',(response:any)=>{
   this.messages.push(response?.data)
+
   })
 }
 
 ngOnChanges(){
+
   if(this.chatRoom){
       this.signalSocket.createChat(this.chatRoom?.email).then((response:any)=>console.log(response))
       this.signalSocket.loadChatMessages(this.chatRoom?.email,1).then((response:any)=>{
@@ -42,7 +52,7 @@ ngOnChanges(){
       //  "timeStamp": "2023-03-29T06:47:08.3831426" } ]
 
       console.log(this.messages,response?.data?.messages)
-
+        console.log(this.chatRoom)
   })
   }
 }
@@ -81,7 +91,10 @@ messageFileUpload(event:any){
 removeFile(){
   this.fileHandler=null
 }
-
+ngOnDestroy(){
+  this.signalSocket.disconnectSocket()
+  this.signalSocket.connection.stop()
+}
 // emitTesting(){
 //   this.connectionStatusService.emitConnected();
 // }

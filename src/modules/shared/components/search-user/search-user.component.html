@@ -1,22 +1,25 @@
 <table style="width:100% ;background-image: linear-gradient(white,orange,white,green,white);">
   <tr>
-   <td style="width:40%">
-    <table style="width:100%;height:700px;background-color: aliceblue;">
-      <thead style="height: 45px;">
-        <tr style="height: 20px;background-color:#eee;">
-          <td [style.color]="statusOnline?'green':'red'">●</td>
-          <td>
-            <tr>
+    <td style="width:40%">
+      <table style="width:100%;height:700px;background-color: aliceblue;">
+        <thead style="height: 45px;display: block;width: 100%;">
+          <tr style="height: 20px;background-color:#eee;">
+            <td [style.color]="statusOnline?'green':'red'">●</td>
+            <td style="width: 100%;height: 50px;">
+            <tr >
             <td >
-            <button style="width:100%;text-align: center;background-color: transparent;border-width: thin; border-color: grey;">
-              search user
-            </button>
+              <button
+                style="width:100%;text-align: center;background-color: transparent;border-width: thin; border-color: grey;">
+                search user
+              </button>
             </td>
-            <td style="max-width: 192;" >
-              <input type="text" placeholder="Tarun..." style="width:100%" (input)="search($event.target)">
+            <td style="max-width: 192;">
+              <input type="text" placeholder="Tarun..." style="width:100%" (input)="search($event.target)" (focus)="noResultsToShowToggler()">
             </td>
-            <td style="width:360px;text-align: right;">
-              <div type="button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" style="vertical-align: middle;border: none;padding: 0px;height:20px">
+            <td style="width:360px;"></td>
+            <td style="text-align: right;">
+              <div type="button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
+                style="vertical-align: middle;border: none;padding: 0px;height:20px">
                 <mat-icon>more_vert</mat-icon>
               </div>
               <mat-menu #menu="matMenu">
@@ -36,36 +39,77 @@
 
             </td>
           </tr>
-          </td>
-        </tr>
-      </thead>
-      <tbody style="height: 600px;">
-        <tr><td></td><td style="width: 700px;">
-      <ng-container  *ngIf="searchResults">
-        <ng-container *ngFor="let user of searchResults">
-      <br>
-      <tr type="button" style="border:solid;height: 50px; background-color:#eee;width: 100%;text-align: -webkit-center;" (click)="createChat(user)" >
-        <td style="text-align: center;width: 700px;">{{user.firstName}} {{user.lastName}}</td>
-        <!-- <td>{{user.email}}</td> -->
-      </tr>
-      <br>
-      </ng-container>
-      </ng-container>
-      <ng-container  *ngIf="!searchResults||searchResults.length<1">
-        <tr >
-        <td></td>
-        <td style="text-align: center;width: 700px;">No results to show !</td>
-        </tr>
-        </ng-container>
     </td>
-
-      </tr></tbody>
+  </tr>
+        </thead>
+        <tbody  >
+          <tr style="max-height: 250px;display:block; overflow:auto;width:700px;">
+            <td></td>
+            <td style="width: 700px;">
+              <ng-container *ngIf="searchResults && searchResults?.length>1">
+                  <tr style="height: 50px; background-color:lightgreen;width: 100%;text-align: -webkit-center;">
+                    <td></td>
+                    <td style="text-align: center;width: 700px;">Search Results </td>
+                  </tr>
+                  <ng-container *ngFor="let user of searchResults">
+                      <tr type="button" style="border:solid;height: 50px; background-color:#eee;width: 100%;text-align: -webkit-center;"
+                        (click)="createChat(user)">
+                        <td ><img [src]="url+'/'+user.profilePic" style="width: 30px;border: solid;border-width: thin;"></td>
+                        <td style="text-align: center;width: 700px;">{{user.firstName}} {{user.lastName}}</td>
+                      </tr>
+                  </ng-container>
+                </ng-container>
+                <ng-container *ngIf="noResultsToShowToggle">
+                  <tr style="height: 50px; background-color:rgb(10, 178, 230);width: 100%;text-align: -webkit-center;">
+                    <td></td>
+                    <td style="text-align: center;width: 700px;">Search Results</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td style="text-align: center;width: 700px;">No results to show !</td>
+                  </tr>
+                </ng-container>
+            </td>
+          </tr>
+          <tr style="height: 300px;display:block; overflow:auto;width:700px;">
+            <td></td>
+            <td>
+              <tr style="height: 50px; background-color:lightgreen;width: 100%;text-align: -webkit-center;">
+                <td></td>
+                <td style="text-align: center;width: 700px;">Chat List</td>
+              </tr>
+              <ng-container *ngIf="chatList">
+                <ng-container *ngFor="let user of chatList">
+                  <tr type="button"
+                    style="border:solid;height: 50px; background-color:#08f7e3;width: 100%;text-align: -webkit-center;"
+                    (click)="createChat(user)">
+                    <td ><img [src]="url+'/'+user.profilePic" style="width: 30px;border: solid;border-width: thin;"></td>
+                    <td style="text-align: center;width: 600px;">{{user.firstName}} {{user.lastName}}</td>
+                    <!-- <td>{{user.email}}</td> -->
+                  </tr>
+                  <tr></tr>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="!chatList">
+                <ng-container >
+                  <tr type="button"
+                    style="border:solid;height: 50px; background-color:#08f7e3;width: 100%;text-align: -webkit-center;">
+                    <td ></td>
+                    <td style="text-align: center;width: 600px;">Nothing To Show</td>
+                    <!-- <td>{{user.email}}</td> -->
+                  </tr>
+                  <tr></tr>
+                </ng-container>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
       </table>
-  </td>
-  <td style="width: 50%;">
-    <app-chat [chatRoom]="chatRoom"></app-chat>
-  </td>
-</tr>
+    </td>
+    <td style="width: 50%;">
+      <app-chat [chatRoom]="chatRoom"></app-chat>
+    </td>
+  </tr>
 </table>
 
 
