@@ -3,12 +3,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SoketService } from 'src/services/shared/soket.service';
 import { SharedHttpServiceService } from 'src/services/shared/shared-http-service.service';
 import { url } from 'src/environments/constants';
+import { ConnectionStatusService } from 'src/services/shared/connection-status.service';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnChanges {
+  state=this.signalSocket.connection.state
   urlHandler=URL;
   @Input() chatRoom:any;
   messages:any;
@@ -17,17 +19,15 @@ export class ChatComponent implements OnChanges {
   fileHandler:any;
   imageExtensions=['jpg','jpeg','gif','png',]
   imageUrl:any=''
-constructor(private httpService:SharedHttpServiceService,private formBuilder:FormBuilder,private signalSocket:SoketService){
+constructor(private httpService:SharedHttpServiceService,private formBuilder:FormBuilder,private signalSocket:SoketService, private connectionStatusService:ConnectionStatusService){
   this.chatForm=formBuilder.group(
     {
       message:['',],
     }
   )
   this.signalSocket.connection.on('ReceiveMessage',(response:any)=>{
-    this.messages.push(response?.data)
+  this.messages.push(response?.data)
   })
-  signalSocket.startConnection().then((response:any)=>{console.log(' Socket Connection Success !')})
-  .catch((error:any)=>{console.log('Disconnected !')});
 }
 
 ngOnChanges(){
@@ -42,6 +42,7 @@ ngOnChanges(){
       //  "timeStamp": "2023-03-29T06:47:08.3831426" } ]
 
       console.log(this.messages,response?.data?.messages)
+
   })
   }
 }
@@ -80,4 +81,8 @@ messageFileUpload(event:any){
 removeFile(){
   this.fileHandler=null
 }
+
+// emitTesting(){
+//   this.connectionStatusService.emitConnected();
+// }
 }

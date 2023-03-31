@@ -3,6 +3,7 @@ import { SharedHttpServiceService } from 'src/services/shared/shared-http-servic
 import { ChatComponent } from '../chat/chat.component';
 import { Router } from '@angular/router';
 import { ConnectionStatusService } from 'src/services/shared/connection-status.service';
+import { SoketService } from 'src/services/shared/soket.service';
 @Component({
   selector: 'app-search-user',
   templateUrl: './search-user.component.html',
@@ -13,8 +14,8 @@ export class SearchUserComponent {
   chatRoom:any;
   searchResults:any;
   statusOnline:boolean= false;
-  constructor(private signalStatus:ConnectionStatusService,private httpClient:SharedHttpServiceService,private _router:Router){
-    signalStatus.status.subscribe((response:any)=>{this.statusOnline=response.status,console.log(response)})
+  constructor(private signalManager:SoketService,private signalStatus:ConnectionStatusService,private httpClient:SharedHttpServiceService,private _router:Router){
+    signalStatus.getStatus().subscribe((response:any)=>{this.statusOnline=response.status})
   }
   search(inputData:any){
     if(!inputData.value){
